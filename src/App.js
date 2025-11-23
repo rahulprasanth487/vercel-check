@@ -4,7 +4,7 @@ function App() {
   const [status, setStatus] = useState("");
 
   async function checkHealth() {
-    const res = await fetch("http://127.0.0.1:5001/api/health");
+    const res = await fetch("/api/health");
     const data = await res.json();
     setStatus(data.status || "no response");
   }
