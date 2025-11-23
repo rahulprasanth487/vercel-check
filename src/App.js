@@ -10,7 +10,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div> 
       <h1>FastAPI Health Demo</h1>
       <button onClick={checkHealth}>Check Health</button>
       <p>Status: {status}</p>

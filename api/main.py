@@ -1,21 +1,24 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pymongo import MongoClient
+
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # or restrict to 'http://localhost:3000'
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
-
-@app.get("/api/")
-def root():
-    return {"message": "Hello from FastAPI!"}
+client = MongoClient("mongodb+srv://clgworks2024_db_user:Rx5U0XJKuAWe0JRJ@cluster0.zyj1byl.mongodb.net/?appName=Cluster0")
+db = client["verceldemo_db"]
+todos_collection = db["todos"]
 
 @app.get("/api/health")
 def health_check():
-    return {"status": "healthy"}
+    todos = list(todos_collection.find({}, {"_id": 1, "title": 1, "done": 1}))
+    for todo in todos:
+        todo["_id"] = str(todo["_id"])
+    return {"status": "healthy", "todos": todos}
